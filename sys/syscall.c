@@ -520,7 +520,7 @@ pid_t sys_fork()
     return child_task->pid;
 }
 
-uint64_t sys_execvpe(char *file, char *argv[], char *envp[])
+uint64_t sys_execvpe(char* file, char* argv[], char* envp[])
 {
     task_struct *new_task = create_elf_proc(file, argv);
 
@@ -553,7 +553,7 @@ uint64_t sys_execvpe(char *file, char *argv[], char *envp[])
 uint64_t sys_wait(uint64_t status)
 {
     volatile task_struct *cur_task = CURRENT_TASK;
-    int *status_p = (int*) status;
+    int* status_p = (int*) status;
 
     if (cur_task->no_children == 0) {
         if (status_p) *status_p = -1;

@@ -93,7 +93,8 @@ task_struct* alloc_new_task(bool IsUserProcess)
     return new_task;
 }
 
-vma_struct* alloc_new_vma(uint64_t start_addr, uint64_t end_addr, uint64_t flags, uint64_t type, uint64_t file_d)
+vma_struct* alloc_new_vma(uint64_t start_addr, uint64_t end_addr, 
+	uint64_t flags, uint64_t type, uint64_t file_d)
 {
     vma_struct *vma = NULL;
 

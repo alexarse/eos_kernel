@@ -119,7 +119,7 @@ int main(int argc, char **argv)
     while(1) {
         j = 0, k = 0;
 
-        printf("\n[user@SBUnix ~%s]$", currdir);
+        printf("\n[user@eos ~%s]$", currdir);
 
         scanf("%s", ptr);
         ptr_length = strlen(ptr);
@@ -129,18 +129,22 @@ int main(int argc, char **argv)
 
         if (ptr_length == 0) {
             continue;
-        } else if (strcmp(ptr, "echo $PATH")==0) {
+        } else if (strcmp(ptr, "echo $PATH") == 0) {
             printf("PATH: %s", path);
             continue;
         }
         /*****1) To check if process is to be run in background ****/
         bg_flag = ptr[ptr_length - 1];
-        if (bg_flag == '&') {
+        
+		if (bg_flag == '&') {
             ptr[ptr_length - 1] = '\0';
             ptr_length -= 1;
-            if (ptr_length == 0)
+            
+			if (ptr_length == 0) {
                 continue;
+			}
         }
+
         //collect the arguments entered by user in 2D array args
         for (i = 0; i < ptr_length; i++) {
             if(ptr[i] == ' ') {

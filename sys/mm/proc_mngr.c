@@ -12,6 +12,7 @@
 
 // Task list. The next READY task on the list will be executed.
 static task_struct* next_task_list = NULL;
+
 // Current running task
 task_struct* CURRENT_TASK = NULL;
 // Idle task. This will run only when there is no READY task to be run
@@ -264,7 +265,7 @@ void schedule_process(task_struct* new_task, uint64_t entry_point, uint64_t stac
     new_task->kernel_stack[KERNEL_STACK_SIZE-21] = (uint64_t)irq0 + 0x20;
 
     // 4) Set rsp to KERNEL_STACK_SIZE-16
-    new_task->rsp_register = (uint64_t)&new_task->kernel_stack[KERNEL_STACK_SIZE-22];
+    new_task->rsp_register = (uint64_t)&new_task->kernel_stack[KERNEL_STACK_SIZE - 22];
 
     // 5) Add to the next_task_list 
     add_to_task_list(new_task);

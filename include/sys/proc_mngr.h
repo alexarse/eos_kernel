@@ -31,14 +31,14 @@ enum vmatype {
 };
 
 enum vmaflag {
-    NONE,  //no permission
-    X,     //execute only
-    W,     //write only
-    WX,    //write execute
-    R,     //read only
-    RX,    //read execute
-    RW,    //read write
-    RWX    //read write execute
+	NONE,  // no permission.
+	X,     // execute only.
+	W,     // write only.
+    WX,    // write execute.
+    R,     // read only.
+    RX,    // read execute.
+    RW,    // read write.
+    RWX    // read write execute.
 };
 
 
@@ -47,45 +47,46 @@ typedef struct mm_struct mm_struct;
 typedef struct task_struct task_struct;
 
 struct vm_area_struct {
-    mm_struct *vm_mm;               // The address space we belong to.
-    uint64_t vm_start;              // Our start address within vm_mm
-    uint64_t vm_end;                // The first byte after our end address within vm_mm
-    vma_struct *vm_next;            // linked list of VM areas per task, sorted by address
-    uint64_t vm_flags;              // Flags read, write, execute permissions
-    uint64_t vm_type;               // type of segment its reffering to 
-    uint64_t vm_file_descp;         // reference to file descriptors for file opened for writing
+	mm_struct* vm_mm;       // The address space we belong to.
+	uint64_t vm_start;      // Our start address within vm_mm
+    uint64_t vm_end;        // The first byte after our end address within vm_mm
+    vma_struct* vm_next;    // linked list of VM areas per task, sorted by address
+    uint64_t vm_flags;      // Flags read, write, execute permissions
+    uint64_t vm_type;       // type of segment its reffering to 
+    uint64_t vm_file_descp; // reference to file descriptors for file opened for writing
 };
 
 struct mm_struct {
-    vma_struct *vma_list;           // list of VMAs
-    uint64_t pml4_t;                // Actual physical base addr for PML4 table
-    uint32_t vma_count;             // number of VMAs
-    uint64_t hiwater_vm;            // High-water virtual memory usage
+    vma_struct *vma_list;   // list of VMAs
+    uint64_t pml4_t;        // Actual physical base addr for PML4 table
+    uint32_t vma_count;     // number of VMAs
+    uint64_t hiwater_vm;    // High-water virtual memory usage
     uint64_t total_vm;
     uint64_t stack_vm;
     uint64_t start_brk, end_brk, start_stack;
     uint64_t arg_start, arg_end, env_start, env_end;
 };
 
+
 struct task_struct {
-    pid_t pid;
-    pid_t ppid;
+    pid_t pid;	// Task pid.
+    pid_t ppid; // Parent pid.
     bool IsUserProcess;
     uint64_t kernel_stack[KERNEL_STACK_SIZE];
-    uint64_t rip_register;
+    uint64_t rip_register;	
     uint64_t rsp_register;
-    uint64_t task_state;            // Saves the current state of task
+    uint64_t task_state;		 // Saves the current state of task
     mm_struct* mm; 
-    char comm[30];                  // Name of task
-    uint32_t sleep_time;            // Number of centiseconds to sleep
-    task_struct* next;              // The next process in the process list
-    task_struct* last;              // The process that ran last
-    task_struct* parent;            // Keep track of parent process on fork
-    task_struct* childhead;         // Keep track of its children on fork
-    task_struct* siblings;          // Keep track of its siblings (children of same parent)
-    uint64_t* file_descp[MAXFD];    // array of file descriptor pointers
-    uint32_t no_children;           // Number of children
-    pid_t wait_on_child_pid;        // pid of child last exited
+    char comm[30];               // Name of task
+    uint32_t sleep_time;         // Number of centiseconds to sleep
+    task_struct* next;           // The next process in the process list
+    task_struct* last;           // The process that ran last
+    task_struct* parent;         // Keep track of parent process on fork
+    task_struct* childhead;      // Keep track of its children on fork
+    task_struct* siblings;       // Keep track of its siblings (children of same parent)
+    uint64_t* file_descp[MAXFD]; // Array of file descriptor pointers
+    uint32_t no_children;        // Number of children
+    pid_t wait_on_child_pid;     // pid of child last exited
 };
 
 extern task_struct* CURRENT_TASK;
