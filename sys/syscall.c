@@ -503,17 +503,19 @@ int sys_lseek(uint64_t fd_type, int offset, int whence)
 
 pid_t sys_fork()
 {
-    // Take a pointer to this process' task struct for later reference.
-    task_struct *parent_task = CURRENT_TASK; 
+	// Take a pointer to this process task struct for later reference.
+    task_struct* parent_task = CURRENT_TASK; 
 
     // Create a new process.
     task_struct* child_task = copy_task_struct(parent_task); 
 
-    // Add it to the end of the ready queue
-    schedule_process(child_task, parent_task->kernel_stack[KERNEL_STACK_SIZE-6], parent_task->kernel_stack[KERNEL_STACK_SIZE-3]);
+    // Add it to the end of the ready queue.
+    schedule_process(child_task, 
+		parent_task->kernel_stack[KERNEL_STACK_SIZE - 6],
+		parent_task->kernel_stack[KERNEL_STACK_SIZE - 3]);
 
-    // Set return (rax) for child process to be 0
-    child_task->kernel_stack[KERNEL_STACK_SIZE-7] = 0UL;
+    // Set return (rax) for child process to be 0.
+    child_task->kernel_stack[KERNEL_STACK_SIZE - 7] = 0UL;
 
     return child_task->pid;
 }
@@ -572,11 +574,13 @@ uint64_t sys_wait(uint64_t status)
 uint64_t sys_waitpid(uint64_t fpid, uint64_t fstatus, uint64_t foptions)
 {
     pid_t pid = fpid;
-    volatile task_struct *cur_task = CURRENT_TASK;
-    int *status_p = (int*) fstatus;
+    volatile task_struct* cur_task = CURRENT_TASK;
+    int* status_p = (int*) fstatus;
 
     if (cur_task->no_children == 0) {
-        if (status_p) *status_p = -1;
+        if (status_p) {
+			*status_p = -1;
+		}
         return -1;
     }
 
@@ -592,7 +596,10 @@ uint64_t sys_waitpid(uint64_t fpid, uint64_t fstatus, uint64_t foptions)
     // Enable interrupt for scheduling next process
     __asm__ __volatile__ ("int $32");
 
-    if (status_p) *status_p = 0;
+    if (status_p) { 
+		*status_p = 0;
+	}
+
     return (uint64_t)cur_task->wait_on_child_pid;
 }
 
@@ -623,10 +630,10 @@ void sys_exit()
 
 int sys_sleep(int msec)
 {
-    task_struct *task = CURRENT_TASK;
+    task_struct* task = CURRENT_TASK;
 
-    // Convert into centiseconds, as our timer runs per 1 centisec
-    task->sleep_time = msec/10;
+    // Convert into centiseconds, as our timer runs per 1 centisec.
+    task->sleep_time = msec / 10;
     task->task_state = SLEEP_STATE;
     __asm__ __volatile__("int $32;");
 
@@ -756,12 +763,19 @@ void sys_yield()
     __asm__ __volatile__ ("int $32");
 }
 
-const char *t_state[NUM_TASK_STATES] = { "RUNNING" , "READY  " , "SLEEP  " , "WAIT   " , "IDLE   " , "EXIT   ", "ZOMBIE "};
+const char* t_state[NUM_TASK_STATES] = { 
+	"RUNNING" , 
+	"READY  " , 
+	"SLEEP  " , 
+	"WAIT   " , 
+	"IDLE   " , 
+	"EXIT   " , 
+	"ZOMBIE " };
 
 void sys_listprocess()
 {
     int i = 0;
-    task_struct *cur = CURRENT_TASK;
+    task_struct* cur = CURRENT_TASK;
 
     kprintf("\n ===== LIST OF CURRENT PROCESSES ====== "
             "\n  #  |  PID  |  PPID  |   State   |  Process Name "
@@ -776,8 +790,9 @@ void sys_listprocess()
 
 void sys_shutdown()
 {
-    task_struct *cur = CURRENT_TASK;
-    while (cur) {
+    task_struct* cur = CURRENT_TASK;
+    
+	while (cur) {
         cur->task_state = EXIT_STATE; 
         cur = cur->next;
     }
