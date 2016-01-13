@@ -26,24 +26,33 @@ extern bool InitScheduling;
 
 void start(uint32_t* modulep, void* physbase, void* physfree)
 {
-    uint64_t phys_size = 0x0, phys_base = 0x0;
+	uint64_t phys_size = 0x0;
+	uint64_t phys_base = 0x0;
 
     struct smap_t {
-        uint64_t base, length;
+		uint64_t base, length;
         uint32_t type;
     }__attribute__((packed)) *smap;
-    while(modulep[0] != 0x9001) modulep += modulep[1]+2;
-    for(smap = (struct smap_t*)(modulep+2); smap < (struct smap_t*)((char*)modulep+modulep[1]+2*4); ++smap) {
-        if (smap->type == 1 /* memory */ && smap->length != 0) {
-            set_cursor_pos(3, 5);
-            kprintf("Available Physical Memory [%x-%x]", smap->base, smap->base + smap->length);
-            phys_base = smap->base;
+	
+	while(modulep[0] != 0x9001) { 
+		modulep += modulep[1] + 2;
+	}
+
+	for(smap = (struct smap_t*)(modulep + 2); 
+		smap < (struct smap_t*)((char*)modulep+modulep[1]+ 2 * 4); ++smap) {
+		// Type 1 = Memory.
+		if (smap->type == 1 && smap->length != 0) {
+			set_cursor_pos(3, 5);
+            
+			kprintf("Available Physical Memory [%x-%x]", smap->base, 
+				smap->base + smap->length);
+            
+			phys_base = smap->base;
             phys_size = smap->length;
         }
     }
 
-    // kernel starts here
-
+    // Kernel starts here.
     phys_init(phys_base, (uint64_t) physfree, phys_size); 
 
     init_paging((uint64_t)&kernmem, (uint64_t)physbase, K_MEM_PAGES);
@@ -67,28 +76,29 @@ void start(uint32_t* modulep, void* physbase, void* physfree)
     // Allow interrupts
     sti;
 
-    // Init Disk and don't force create a new File System
-    init_disk(FALSE);
+	// Init Disk and don't force create a new File System
+   	init_disk(FALSE);
 
-    // Enable Process Scheduling
-    InitScheduling = TRUE;
+   	// Enable Process Scheduling
+   	InitScheduling = TRUE;
 
-    while(1);
+   	while(1);
 }
 
 
 void boot(void)
 {
-    // note: function changes rsp, local stack variables can't be practically used
-    __asm__(
-            "movq %%rsp, %0;"
-            "movq %1, %%rsp;"
-            :"=g"(loader_stack)
-            :"r"(&stack[INITIAL_STACK_SIZE])
-           );
+	// Note: function changes rsp, local stack variables can't be practically 
+	// used.
+	__asm__(
+		"movq %%rsp, %0;"
+        "movq %1, %%rsp;"
+        :"=g"(loader_stack)
+        :"r"(&stack[INITIAL_STACK_SIZE])
+    );
 
-    // Disable interrupts
-    cli;
+	// Disable interrupts
+	cli;
 
     // Intialize
     init_gdt();
@@ -99,18 +109,19 @@ void boot(void)
     init_timer(1);
     init_keyboard();
 
-    set_cursor_pos(0, 25);
-    kprintf("________________");
-    set_cursor_pos(1, 25);
-    kprintf("|    SBUnix    |");
-    set_cursor_pos(2, 25);
-    kprintf("----------------");
+    set_cursor_pos(0, 0);
+    kprintf("------------------------------------------------");
+    set_cursor_pos(1, 0);
+    kprintf("|                    EOS                       |");
+    set_cursor_pos(2, 0);
+    kprintf("------------------------------------------------");
 
     start(
-            (uint32_t*)((char*)(uint64_t)loader_stack[3] + (uint64_t)&kernmem - (uint64_t)&physbase),
-            &physbase,
-            (void*)(uint64_t)loader_stack[4]
-         );
+		(uint32_t*)((char*)(uint64_t)loader_stack[3] + 
+			(uint64_t)&kernmem - (uint64_t)&physbase),
+        &physbase,
+        (void*)(uint64_t)loader_stack[4]
+	);
 
     while(1);
 }

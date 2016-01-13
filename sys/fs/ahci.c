@@ -199,7 +199,7 @@ int find_cmdslot(HBA_PORT *port)
             return i;
         slots >>= 1;
     }
-    kprintf("Cannot find free command list entry\n");
+    //kprintf("Cannot find free command list entry\n");
     return -1;
 }
 

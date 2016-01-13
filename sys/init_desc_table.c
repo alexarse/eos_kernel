@@ -6,26 +6,33 @@
 #include <io_common.h>
 #include <sys/init_desc_table.h>
 
-/**********************************GDT****************************************/
+//*****************************************************************************
+// GDT
+//*****************************************************************************
+// The Global Descriptor Table or GDT is a data structure used by Intel
+// x86-family processors starting with the 80286 in order to define the 
+// characteristics of the various memory areas used during program execution,
+// including the base address, the size and access privileges like 
+// executability and writability. These memory areas are called segments 
+// in Intel terminology.
+//*****************************************************************************
 
 #define MAX_GDT_ENTRIES 32
 
 extern void load_gdt(uint64_t, uint64_t, uint64_t);
 
-struct gdt_entry_struct
-{
+struct gdt_entry_struct {
     uint16_t limit_low;
     uint16_t base_low;
     uint8_t  base_mid;
-    uint8_t  access_bits;      // Contains TYPE, DT, DPL and P bits
-    uint8_t  gran_bits;        // Contains limit_high, AVL, L, D and G bits
+    uint8_t  access_bits; // Contains TYPE, DT, DPL and P bits
+    uint8_t  gran_bits;   // Contains limit_high, AVL, L, D and G bits
     uint8_t  base_high;
 } __attribute__((packed));
 
-struct gdt_ptr_struct
-{
-    uint16_t limit;            // Size of GDT table 
-    uint64_t base;             // Base address of GDT table 
+struct gdt_ptr_struct {
+    uint16_t limit; // Size of GDT table 
+    uint64_t base;  // Base address of GDT table 
 } __attribute__((packed));
      
 typedef struct gdt_entry_struct gdt_entry_t;
@@ -64,7 +71,13 @@ void init_gdt()
     load_gdt((uint64_t)&gdt_ptr, 0x08, 0x010);
 }
 
-/**********************************IDT****************************************/
+//*****************************************************************************
+// IDT
+//*****************************************************************************
+// The Interrupt Descriptor Table (IDT) is a data structure used by the x86
+// architecture to implement an interrupt vector table. The IDT is used by the 
+// processor to determine the correct response to interrupts and exceptions.
+//*****************************************************************************
 
 #define MAX_IDT_ENTRIES 256
 
@@ -80,8 +93,7 @@ extern void syscall_handler();
 extern void irq0();
 extern void irq1();
 
-struct idt_entry_struct
-{
+struct idt_entry_struct {
     uint16_t target_offset_low;
     uint16_t target_selector;
     uint8_t  ist_reserved_bits;
@@ -91,10 +103,9 @@ struct idt_entry_struct
     uint32_t reserved;
 } __attribute__((packed));
 
-struct idt_ptr_struct
-{
-    uint16_t limit;             // Size of IDT table 
-    uint64_t base;              // Base address of IDT table 
+struct idt_ptr_struct {
+    uint16_t limit; // Size of IDT table 
+    uint64_t base;  // Base address of IDT table 
 } __attribute__((packed));
 
 typedef struct idt_entry_struct idt_entry_t;
@@ -138,7 +149,18 @@ void init_idt()
     load_idtr((uint64_t)&idt_ptr);
 }
 
-/**********************************TSS****************************************/
+//*****************************************************************************
+// TSS
+//*****************************************************************************
+// The task state segment (TSS) is a special structure on x86-based computers
+// which holds information about a task. It is used by the operating system
+// kernel for task management. Specifically, the following information is
+// stored in the TSS:
+// 	- Processor register state
+// 	- I/O port permissions
+// 	- Inner-level stack pointers
+// 	- Previous TSS link
+//*****************************************************************************
 
 extern void load_tss();
 
@@ -184,7 +206,16 @@ void set_tss_rsp0(uint64_t rsp)
     tss.rsp0 = rsp; 
 }
 
-/**********************************PIC****************************************/
+//*****************************************************************************
+// PIC
+//*****************************************************************************
+// The function of the 8259A is actually relatively simple. Each PIC has 
+// 8 input lines, called Interrupt Requests (IRQ), numbered from 0 to 7. When
+// one of these lines goes high, the PIC alerts the CPU and sends the
+// appropriate interrupt number. This number is calculated by adding the IRQ
+// number (0 to 7) to an internal "vector offset" value. The CPU uses this
+// value to execute an appropriate Interrupt Service Routine.
+//*****************************************************************************
 
 void init_pic()
 {
