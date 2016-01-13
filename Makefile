@@ -14,7 +14,7 @@ KERN_SRCS:=$(wildcard sys/*.c sys/*.s sys/*/*.c sys/*/*.s)
 BIN_SRCS:=$(wildcard bin/*/*.c)
 LIBC_SRCS:=$(wildcard libc/*.c libc/*/*.c)
 LD_SRCS:=$(wildcard ld/*.c)
-BINS:=$(addprefix $(ROOTFS)/,$(wildcard bin/*))
+BINS:=$(addprefix $(ROOTFS)/,$(wildcard app/*))
 
 .PHONY: all binary
 
