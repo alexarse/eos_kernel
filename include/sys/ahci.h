@@ -1,46 +1,45 @@
 #include <defs.h>
 #include <sys/virt_mm.h>
 
-#define ATA_DEV_BUSY 0x80
-#define ATA_DEV_DRQ 0x08
+#define ATA_DEV_BUSY 			0x80
+#define ATA_DEV_DRQ 			0x08
 
-#define ATA_DEV_BUSY 0x80
-#define ATA_DEV_DRQ 0x08
-#define HBA_PxIS_TFES   (1 << 30)       /* TFES - Task File Error Status */
-#define ATA_CMD_READ_DMA_EXT 0x25
-#define ATA_CMD_WRITE_DMA_EXT 0x35
+#define ATA_DEV_BUSY 			0x80
+#define ATA_DEV_DRQ 			0x08
+#define HBA_PxIS_TFES   		(1 << 30) // TFES - Task File Error Status.
+#define ATA_CMD_READ_DMA_EXT 	0x25
+#define ATA_CMD_WRITE_DMA_EXT 	0x35
 
-#define SATA_SIG_ATA    0x00000101  // SATA drive
-#define SATA_SIG_ATAPI  0xEB140101  // SATAPI drive
-#define SATA_SIG_SEMB   0xC33C0101  // Enclosure management bridge
-#define SATA_SIG_PM     0x96690101  // Port multiplier
+#define SATA_SIG_ATA    		0x00000101  // SATA drive
+#define SATA_SIG_ATAPI  		0xEB140101  // SATAPI drive
+#define SATA_SIG_SEMB   		0xC33C0101  // Enclosure management bridge
+#define SATA_SIG_PM     		0x96690101  // Port multiplier
 
-#define AHCI_DEV_NULL 2
-#define AHCI_DEV_SATA 1
-#define AHCI_DEV_SATAPI 4
-#define AHCI_DEV_SEMB 2
-#define AHCI_DEV_PM 3
+#define AHCI_DEV_NULL 			2
+#define AHCI_DEV_SATA 			1
+#define AHCI_DEV_SATAPI 		4
+#define AHCI_DEV_SEMB 			2
+#define AHCI_DEV_PM 			3
 
-#define HBA_PORT_DET_PRESENT 3
-#define HBA_PORT_IPM_ACTIVE 1
-#define AHCI_BASE   0x400000    // 4M
+#define HBA_PORT_DET_PRESENT 	3
+#define HBA_PORT_IPM_ACTIVE 	1
+#define AHCI_BASE   			0x400000 // 4M
 
-#define HBA_PxCMD_CR            (1 << 15) /* CR - Command list Running */
-#define HBA_PxCMD_FR            (1 << 14) /* FR - FIS receive Running */
-#define HBA_PxCMD_FRE           (1 <<  4) /* FRE - FIS Receive Enable */
-#define HBA_PxCMD_SUD           (1 <<  1) /* SUD - Spin-Up Device */
-#define HBA_PxCMD_ST            (1 <<  0) /* ST - Start (command processing) */
+#define HBA_PxCMD_CR            (1 << 15) // CR - Command list Running.
+#define HBA_PxCMD_FR            (1 << 14) // FR - FIS receive Running.
+#define HBA_PxCMD_FRE           (1 <<  4) // FRE - FIS Receive Enable.
+#define HBA_PxCMD_SUD           (1 <<  1) // SUD - Spin-Up Device.
+#define HBA_PxCMD_ST            (1 <<  0) // ST - Start (command processing).
 
-#define ATA_DEV_BUSY 0x80
-#define ATA_DEV_DRQ 0x08
+#define ATA_DEV_BUSY 			0x80
+#define ATA_DEV_DRQ 			0x08
 
-typedef uint8_t BYTE;
-typedef uint16_t WORD;
-typedef uint32_t DWORD;
-typedef uint64_t QWORD;
+typedef uint8_t 	BYTE;
+typedef uint16_t 	WORD;
+typedef uint32_t 	DWORD;
+typedef uint64_t 	QWORD;
 
-typedef enum
-{
+typedef enum {
     FIS_TYPE_REG_H2D    = 0x27, // Register FIS - host to device
     FIS_TYPE_REG_D2H    = 0x34, // Register FIS - device to host
     FIS_TYPE_DMA_ACT    = 0x39, // DMA activate FIS - device to host
@@ -51,9 +50,8 @@ typedef enum
     FIS_TYPE_DEV_BITS   = 0xA1, // Set device bits FIS - device to host
 } FIS_TYPE;
 
-typedef struct tagFIS_REG_H2D
-{
-        // DWORD 0
+typedef struct tagFIS_REG_H2D {
+	// DWORD 0
     BYTE    fis_type;   // FIS_TYPE_REG_H2D
 
     BYTE    pmport:4;   // Port multiplier
@@ -86,8 +84,7 @@ typedef struct tagFIS_REG_H2D
 } FIS_REG_H2D;
 
 
-typedef struct tagFIS_REG_D2H
-{
+typedef struct tagFIS_REG_D2H {
     // DWORD 0
     BYTE    fis_type;    // FIS_TYPE_REG_D2H
 
@@ -121,8 +118,7 @@ typedef struct tagFIS_REG_D2H
 } FIS_REG_D2H;
 
 
-typedef struct tagFIS_DATA
-{
+typedef struct tagFIS_DATA {
     // DWORD 0
     BYTE    fis_type;   // FIS_TYPE_DATA
 
@@ -136,8 +132,7 @@ typedef struct tagFIS_DATA
 } FIS_DATA;
 
 
-typedef struct tagFIS_PIO_SETUP
-{
+typedef struct tagFIS_PIO_SETUP {
     // DWORD 0
     BYTE    fis_type;   // FIS_TYPE_PIO_SETUP
 
@@ -175,8 +170,7 @@ typedef struct tagFIS_PIO_SETUP
 
 
 
-typedef struct tagFIS_DMA_SETUP
-{
+typedef struct tagFIS_DMA_SETUP {
     // DWORD 0
     BYTE    fis_type;   // FIS_TYPE_DMA_SETUP
 
@@ -206,14 +200,13 @@ typedef struct tagFIS_DMA_SETUP
 
 } FIS_DMA_SETUP;
 
-typedef volatile struct tagHBA_PORT
-{
+typedef volatile struct tagHBA_PORT {
     DWORD   clb;        // 0x00, command list base address, 1K-byte aligned
     DWORD   clbu;       // 0x04, command list base address upper 32 bits
-    DWORD   fb;     // 0x08, FIS base address, 256-byte aligned
+    DWORD   fb;     	// 0x08, FIS base address, 256-byte aligned
     DWORD   fbu;        // 0x0C, FIS base address upper 32 bits
-    DWORD   is;     // 0x10, interrupt status
-    DWORD   ie;     // 0x14, interrupt enable
+    DWORD   is;     	// 0x10, interrupt status
+    DWORD   ie;     	// 0x14, interrupt enable
     DWORD   cmd;        // 0x18, command and status
     DWORD   rsv0;       // 0x1C, Reserved
     DWORD   tfd;        // 0x20, task file data
@@ -222,27 +215,26 @@ typedef volatile struct tagHBA_PORT
     DWORD   sctl;       // 0x2C, SATA control (SCR2:SControl)
     DWORD   serr;       // 0x30, SATA error (SCR1:SError)
     DWORD   sact;       // 0x34, SATA active (SCR3:SActive)
-    DWORD   ci;     // 0x38, command issue
+    DWORD   ci;     	// 0x38, command issue
     DWORD   sntf;       // 0x3C, SATA notification (SCR4:SNotification)
     DWORD   fbs;        // 0x40, FIS-based switch control
     DWORD   rsv1[11];   // 0x44 ~ 0x6F, Reserved
     DWORD   vendor[4];  // 0x70 ~ 0x7F, vendor specific
 } HBA_PORT;
 
-typedef volatile struct tagHBA_MEM
-{
+typedef volatile struct tagHBA_MEM {
     // 0x00 - 0x2B, Generic Host Control
-    DWORD   cap;        // 0x00, Host capability
-    DWORD   ghc;        // 0x04, Global host control
-    DWORD   is;     // 0x08, Interrupt status
-    DWORD   pi;     // 0x0C, Port implemented
-    DWORD   vs;     // 0x10, Version
-    DWORD   ccc_ctl;    // 0x14, Command completion coalescing control
-    DWORD   ccc_pts;    // 0x18, Command completion coalescing ports
-    DWORD   em_loc;     // 0x1C, Enclosure management location
-    DWORD   em_ctl;     // 0x20, Enclosure management control
-    DWORD   cap2;       // 0x24, Host capabilities extended
-    DWORD   bohc;       // 0x28, BIOS/OS handoff control and status
+    DWORD cap;		// 0x00, Host capability
+    DWORD ghc;      // 0x04, Global host control
+    DWORD is;     	// 0x08, Interrupt status
+    DWORD pi;     	// 0x0C, Port implemented
+    DWORD vs;     	// 0x10, Version
+    DWORD ccc_ctl;	// 0x14, Command completion coalescing control
+    DWORD ccc_pts;	// 0x18, Command completion coalescing ports
+    DWORD em_loc;	// 0x1C, Enclosure management location
+    DWORD em_ctl;	// 0x20, Enclosure management control
+    DWORD cap2;		// 0x24, Host capabilities extended
+    DWORD bohc;		// 0x28, BIOS/OS handoff control and status
 
     // 0x2C - 0x9F, Reserved
     BYTE    rsv[0xA0-0x2C];
@@ -254,8 +246,7 @@ typedef volatile struct tagHBA_MEM
     HBA_PORT    ports[1];   // 1 ~ 32
 } HBA_MEM;
 
-typedef struct tagHBA_CMD_HEADER
-{
+typedef struct tagHBA_CMD_HEADER {
     // DW0
     BYTE    cfl:5;      // Command FIS length in DWORDS, 2 ~ 16
     BYTE    a:1;        // ATAPI
@@ -300,13 +291,13 @@ typedef struct tagHBA_PRDT_ENTRY
 typedef struct tagHBA_CMD_TBL
 {
     // 0x00
-    BYTE    cfis[64];   // Command FIS
+    BYTE cfis[64]; // Command FIS
 
     // 0x40
-    BYTE    acmd[16];   // ATAPI command, 12 or 16 bytes
+    BYTE acmd[16]; // ATAPI command, 12 or 16 bytes
 
     // 0x50
-    BYTE    rsv[48];    // Reserved
+    BYTE rsv[48];  // Reserved
 
     // 0x80
     HBA_PRDT_ENTRY  prdt_entry[1];  // Physical region descriptor table entries, 0 ~ 65535
