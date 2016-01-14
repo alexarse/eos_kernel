@@ -3,11 +3,35 @@
 
 #include <sys/types.h>
 
-#define USER_STACK_TOP  0xF000000000UL
-#define USER_STACK_SIZE 0x10000         // 16*4KB
-#define KERNEL_STACK_SIZE 512           // (512*8) = 4KB
-#define DEBUG_SCHEDULING 0
-#define MAXFD 10
+// The virtual memory area (VMA) is the kernel data structure used to manage
+// distinct regions of a process's address space. A VMA represents a
+// homogeneous region in the virtual memory of a process: a contiguous range
+// of virtual addresses that have the same permission flags and are backed up
+// by the same object (a file, say, or swap space). It corresponds loosely to
+// the concept of a "segment," although it is better described as "a memory
+// object with its own properties." The memory map of a process is made up of
+// (at least) the following areas:
+//
+//	- An area for the program's executable code (often called text)
+//
+//	- Multiple areas for data, including initialized data (that which has an
+//	  explicitly assigned value at the beginning of execution), uninitialized
+//	  data (BSS) and the program stack.
+//	  (The name BSS is a historical relic from an old assembly operator meaning
+//    "block started by symbol." The BSS segment of executable files isn't
+//	  stored on disk, and the kernel maps the zero page to the BSS address
+//	  range.)
+//
+//	- One area for each active memory mapping.
+//
+// from : http://www.makelinux.net/ldd3/chp-15-sect-1
+
+
+#define USER_STACK_TOP		0xF000000000UL
+#define USER_STACK_SIZE		0x10000 // 16*4KB
+#define KERNEL_STACK_SIZE	512		// (512*8) = 4KB
+#define DEBUG_SCHEDULING	0
+#define MAXFD				10
 
 enum task_states {
     RUNNING_STATE,

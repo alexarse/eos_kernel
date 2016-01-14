@@ -552,11 +552,14 @@ uint64_t sys_execvpe(char* file, char* argv[], char* envp[])
 
 uint64_t sys_wait(uint64_t status)
 {
-    volatile task_struct *cur_task = CURRENT_TASK;
+    volatile task_struct* cur_task = CURRENT_TASK;
     int* status_p = (int*) status;
 
     if (cur_task->no_children == 0) {
-        if (status_p) *status_p = -1;
+        if (status_p) {
+			*status_p = -1;
+		}
+
         return -1;
     }
 
@@ -564,10 +567,13 @@ uint64_t sys_wait(uint64_t status)
     cur_task->wait_on_child_pid = 0;
     cur_task->task_state = WAIT_STATE;
 
-    // Enable interrupt for scheduling next process
+    // Enable interrupt for scheduling next process.
     __asm__ __volatile__ ("int $32");
 
-    if (status_p) *status_p = 0;
+    if (status_p) { 
+		*status_p = 0;
+	}
+
     return (uint64_t)cur_task->wait_on_child_pid;
 }
 

@@ -49,4 +49,3 @@ void empty_page_tables(uint64_t pml4_t);
 #define unset_writable_bit(entry) *entry = *entry & 0xFFFFFFFFFFFFFFFDUL
 #define set_cow_bit(entry)        *entry = *entry | PAGING_COW
 #define unset_cow_bit(entry)      *entry = *entry & 0xBFFFFFFFFFFFFFFFUL
-
