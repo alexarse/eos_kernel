@@ -200,9 +200,9 @@ void timer_handler()
                 switch_to_ring3;
             }
 
-#if DEBUG_SCHEDULING
+		#if DEBUG_SCHEDULING
             kprintf("\nScheduler Initiated with PID: %d[%d]", next->pid, next->task_state);
-#endif
+		#endif
 
         } else {
             uint64_t cur_rsp;
@@ -228,9 +228,9 @@ void timer_handler()
                     set_tss_rsp0((uint64_t)&next->kernel_stack[KERNEL_STACK_SIZE-1]);
                     switch_to_ring3;
                 }
-#if DEBUG_SCHEDULING
+			#if DEBUG_SCHEDULING
                 kprintf(" %d[%d]", next->pid, next->task_state);
-#endif
+			#endif
             }
         }
     }

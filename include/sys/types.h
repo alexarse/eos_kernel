@@ -27,11 +27,11 @@
 
 /// [XSI] Used for file block counts.
 /// blkcnt_t shall be signed integer types.
-typedef uint64_t blkcnt_t;
+typedef uint64_t 	blkcnt_t;
 
 /// [XSI] Used for block sizes. 
 /// blksize_t shall be signed integer types.
-typedef int64_t blksize_t;
+typedef int64_t 	blksize_t;
 
 //Used for system times in clock ticks or CLOCKS_PER_SEC; see <time.h>.
 //clock_t
@@ -41,46 +41,46 @@ typedef int64_t blksize_t;
 
 /// [XSI] Used for device IDs.
 /// dev_t shall be an integer type.
-typedef int64_t dev_t; 
+typedef int64_t 	dev_t;
 
 /// [XSI] Used for file system block counts.
 /// fsblkcnt_t shall be defined as unsigned integer types.
-typedef uint64_t fsblkcnt_t;
+typedef uint64_t 	fsblkcnt_t;
 
 /// [XSI] Used for file system file counts.
 /// fsfilcnt_t shall be defined as unsigned integer types.
-typedef uint64_t fsfilcnt_t;
+typedef uint64_t 	fsfilcnt_t;
 
 /// [XSI] Used for group IDs.
 /// gid_t shall be integer types. 
-typedef int64_t gid_t; 
+typedef int64_t 	gid_t;
 
 /// [XSI] Used as a general identifier; can be used to contain at least a 
 /// pid_t, uid_t, or gid_t.
 /// id_t shall be integer types.
-typedef int64_t id_t; 
+typedef int64_t 	id_t;
 
 /// [XSI] Used for file serial numbers.
 /// ino_t shall be defined as unsigned integer types.
-typedef uint64_t ino_t;
+typedef uint64_t 	ino_t;
 
 //[XSI] [Option Start] Used for XSI interprocess communication. [Option End]
 //key_t
 
 /// [XSI] Used for some file attributes.
 /// mode_t shall be an integer type.
-typedef int64_t		mode_t;
+typedef int64_t 	mode_t;
 
 /// [XSI] Used for link counts.
 /// nlink_t shall be integer types. 
-typedef uint64_t	nlink_t;
+typedef uint64_t 	nlink_t;
 
 /// [XSI] Used for file sizes.
-typedef uint64_t	off_t;
+typedef uint64_t 	off_t;
 
 /// [XSI] Used for process IDs and process group IDs.
 /// pid_t shall be signed integer types.
-typedef int8_t		pid_t;
+typedef int8_t 		pid_t;
 
 //Used to identify a thread attribute object.
 //pthread_attr_t
