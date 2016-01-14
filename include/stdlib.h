@@ -34,8 +34,8 @@ void shutdown();
 
 pid_t fork();
 int execvpe(const char *file, char *const argv[], char *const envp[]);
-pid_t wait(uint64_t *status);
-pid_t waitpid(pid_t pid, uint64_t *status, int options);
+//pid_t wait(uint64_t *status);
+//pid_t waitpid(pid_t pid, uint64_t *status, int options);
 void yield();
 
 // From "libc/string.c".

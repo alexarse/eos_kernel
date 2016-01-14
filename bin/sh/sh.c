@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <defs.h>
+#include <sys/wait.h>
 #include <sys/dirent.h>
 
 char currdir[1024], args[10][100];
