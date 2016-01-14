@@ -1,98 +1,68 @@
-/* 
- * Copyright (C) 2016 eos - All rights reserved.
- *
- * This file is part of eos. 
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential.
- * Written by Alexandre Arsenault <alx.arsenault@gmail.com>, 13/01/2016
- */
+//The <sys/types.h> header shall define at least the following types:
 
-#ifndef _EOS_SYS_TYPES_H_
-#define _EOS_SYS_TYPES_H_
+//typedef	__int64_t	__darwin_blkcnt_t;	/* total blocks */
+//typedef	__int32_t	__darwin_blksize_t;	/* preferred block size */
+//typedef __int32_t	__darwin_dev_t;		/* dev_t */
+//typedef unsigned int	__darwin_fsblkcnt_t;	/* Used by statvfs and fstatvfs */
+//typedef unsigned int	__darwin_fsfilcnt_t;	/* Used by statvfs and fstatvfs */
+//typedef __uint32_t	__darwin_gid_t;		/* [???] process and group IDs */
+//typedef __uint32_t	__darwin_id_t;		/* [XSI] pid_t, uid_t, or gid_t*/
+//typedef __uint64_t	__darwin_ino64_t;	/* [???] Used for 64 bit inodes */
+//#if __DARWIN_64_BIT_INO_T
+//typedef __darwin_ino64_t __darwin_ino_t;	/* [???] Used for inodes */
+//#else /* !__DARWIN_64_BIT_INO_T */
+//typedef __uint32_t	__darwin_ino_t;		/* [???] Used for inodes */
+//#endif /* __DARWIN_64_BIT_INO_T */
+//typedef __darwin_natural_t __darwin_mach_port_name_t; /* Used by mach */
+//typedef __darwin_mach_port_name_t __darwin_mach_port_t; /* Used by mach */
+//typedef __uint16_t	__darwin_mode_t;	/* [???] Some file attributes */
+//typedef __int64_t	__darwin_off_t;		/* [???] Used for file sizes */
+//typedef __int32_t	__darwin_pid_t;		/* [???] process and group IDs */
+//typedef __uint32_t	__darwin_sigset_t;	/* [???] signal set */
+//typedef __int32_t	__darwin_suseconds_t;	/* [???] microseconds */
+//typedef __uint32_t	__darwin_uid_t;		/* [???] user IDs */
+//typedef __uint32_t	__darwin_useconds_t;	/* [???] microseconds */
+//typedef	unsigned char	__darwin_uuid_t[16];
+//typedef	char	__darwin_uuid_string_t[37];
 
-#include <defs.h>
-
-#define cli __asm__ __volatile__("cli");
-#define sti __asm__ __volatile__("sti");
-
-#define PAGESIZE 0x1000
-#define PAGE_2ALIGN 12 // 2 ^ PAGE_2ALIGN = PAGESIZE
-#define PAGE_ALIGN(ADDR) ((ADDR) >> 12 << 12)
-
-#define READ_CR2(lcr2) __asm__ __volatile__ ("movq %%cr2, %0;" : "=r"(lcr2));
-#define LOAD_CR3(lcr3) __asm__ __volatile__ ("movq %0, %%cr3;" :: "r"(lcr3));
-#define READ_CR3(lcr3) __asm__ __volatile__ ("movq %%cr3, %0;" : "=r"(lcr3));
-
-// The <sys/types.h> header shall define at least the following types:
-
-/// [XSI] Used for file block counts.
-/// blkcnt_t shall be signed integer types.
-typedef uint64_t blkcnt_t;
-
-/// [XSI] Used for block sizes. 
-/// blksize_t shall be signed integer types.
-typedef int64_t blksize_t;
-
-//Used for system times in clock ticks or CLOCKS_PER_SEC; see <time.h>.
+//blkcnt_t
+//Used for file block counts.
+//blksize_t
+//Used for block sizes.
 //clock_t
-
-//Used for clock ID type in the clock and timer functions.
+//Used for system times in clock ticks or CLOCKS_PER_SEC; see <time.h>.
 //clockid_t
-
-/// [XSI] Used for device IDs.
-/// dev_t shall be an integer type.
-typedef int64_t dev_t; 
-
-/// [XSI] Used for file system block counts.
-/// fsblkcnt_t shall be defined as unsigned integer types.
-typedef uint64_t fsblkcnt_t;
-
-/// [XSI] Used for file system file counts.
-/// fsfilcnt_t shall be defined as unsigned integer types.
-typedef uint64_t fsfilcnt_t;
-
-/// [XSI] Used for group IDs.
-/// gid_t shall be integer types. 
-typedef int64_t gid_t; 
-
-/// [XSI] Used as a general identifier; can be used to contain at least a 
-/// pid_t, uid_t, or gid_t.
-/// id_t shall be integer types.
-typedef int64_t id_t; 
-
-/// [XSI] Used for file serial numbers.
-/// ino_t shall be defined as unsigned integer types.
-typedef uint64_t ino_t;
-
-//[XSI] [Option Start] Used for XSI interprocess communication. [Option End]
+//Used for clock ID type in the clock and timer functions.
+//dev_t
+//Used for device IDs.
+//fsblkcnt_t
+//Used for file system block counts.
+//fsfilcnt_t
+//Used for file system file counts.
+//gid_t
+//Used for group IDs.
+//id_t
+//Used as a general identifier; can be used to contain at least a pid_t, uid_t, or gid_t.
+//ino_t
+//Used for file serial numbers.
 //key_t
-
-/// [XSI] Used for some file attributes.
-/// mode_t shall be an integer type.
-typedef int64_t		mode_t;
-
-/// [XSI] Used for link counts.
-/// nlink_t shall be integer types. 
-typedef uint64_t	nlink_t;
-
-/// [XSI] Used for file sizes.
-typedef uint64_t	off_t;
-
-/// [XSI] Used for process IDs and process group IDs.
-/// pid_t shall be signed integer types.
-typedef int8_t		pid_t;
-
-//Used to identify a thread attribute object.
+//[XSI] [Option Start] Used for XSI interprocess communication. [Option End]
+//mode_t
+//Used for some file attributes.
+//nlink_t
+//Used for link counts.
+//off_t
+//Used for file sizes.
+//pid_t
+//Used for process IDs and process group IDs.
 //pthread_attr_t
-
-//Used to identify a barrier.
+//Used to identify a thread attribute object.
 //pthread_barrier_t
-
-//Used to define a barrier attributes object.
+//Used to identify a barrier.
 //pthread_barrierattr_t
-
-//Used for condition variables.
+//Used to define a barrier attributes object.
 //pthread_cond_t
+//Used for condition variables.
 //pthread_condattr_t
 //Used to identify a condition attribute object.
 //pthread_key_t
@@ -109,17 +79,12 @@ typedef int8_t		pid_t;
 //Used for read-write lock attributes.
 //pthread_spinlock_t
 //Used to identify a spin lock.
-// [XSI] Used to identify a thread.
 //pthread_t
-
-/// [XSI] Used for sizes of objects.
-/// size_t shall be an unsigned integer type.
-typedef uint64_t	size_t;
-
-/// [XSI] Used for a count of bytes or an error indication.
-/// ssize_t shall be signed integer types.
-typedef int64_t		ssize_t;
-
+//Used to identify a thread.
+//size_t
+//Used for sizes of objects.
+//ssize_t
+//Used for a count of bytes or an error indication.
 //suseconds_t
 //[XSI] [Option Start] Used for time in microseconds. [Option End]
 //time_t
@@ -164,6 +129,9 @@ typedef int64_t		ssize_t;
 //[Option End]
 //Additionally:
 
+//mode_t shall be an integer type.
+
+//dev_t shall be an integer type.
 
 //nlink_t, uid_t, gid_t, and id_t shall be integer types.
 
@@ -198,5 +166,3 @@ typedef int64_t		ssize_t;
  //pthread_spinlock_t
 //[OB TRC] [Option Start]
 //trace_attr_t
-
-#endif // _EOS_SYS_TYPES_H_

@@ -2,7 +2,7 @@
 #include <defs.h>
 #include <stdlib.h>
 
-#define PAGESIZE 4096
+//#define PAGESIZE 4096
 
 static char *mem_start_p;
 static char *heap_end;

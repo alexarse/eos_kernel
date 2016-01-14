@@ -1,6 +1,8 @@
 #ifndef _STDLIB_H
 #define _STDLIB_H
+
 #include <defs.h>
+#include <sys/types.h>
 
 int main(int argc, char* argv[]);
 void exit(int status);
