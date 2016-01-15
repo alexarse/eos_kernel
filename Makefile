@@ -1,14 +1,14 @@
-CC=gcc
-AS=as
-CFLAGS=-O1 -std=c99 -Wall -Werror -nostdinc -Iinclude -msoft-float -mno-sse -mno-red-zone -fno-builtin -fno-stack-protector -fPIC -march=amdfam10 -g3
-LD=ld
-LDLAGS=-nostdlib
-AR=ar
+CC = gcc
+AS = as
+CFLAGS = -O1 -std=c99 -Wall -Werror -nostdinc -Iinclude -msoft-float -mno-sse -mno-red-zone -fno-builtin -fno-stack-protector -fPIC -march=amdfam10 -g3
+LD = ld
+LDLAGS = -nostdlib
+AR = ar
 
-ROOTFS=rootfs
-ROOTBIN=$(ROOTFS)/bin
-ROOTLIB=$(ROOTFS)/lib
-ROOTBOOT=$(ROOTFS)/boot
+ROOTFS = rootfs
+ROOTBIN = $(ROOTFS)/bin
+ROOTLIB = $(ROOTFS)/lib
+ROOTBOOT = $(ROOTFS)/boot
 
 KERN_SRCS:=$(wildcard sys/*.c sys/*.s sys/*/*.c sys/*/*.s)
 BIN_SRCS:=$(wildcard bin/*/*.c)

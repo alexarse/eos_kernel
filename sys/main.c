@@ -42,8 +42,8 @@ void start(uint32_t* modulep, void* physbase, void* physfree)
 		smap < (struct smap_t*)((char*)modulep+modulep[1]+ 2 * 4); ++smap) {
 		// Type 1 = Memory.
 		if (smap->type == 1 && smap->length != 0) {
-			set_cursor_pos(3, 5);
-            
+			
+			set_cursor_pos(3, 0);
 			kprintf("Available Physical Memory [%x-%x]", smap->base, 
 				smap->base + smap->length);
             
@@ -110,11 +110,11 @@ void boot(void)
     init_keyboard();
 
     set_cursor_pos(0, 0);
-    kprintf("------------------------------------------------");
+    kprintf("---------------------------------------------------------------");
     set_cursor_pos(1, 0);
-    kprintf("|                    EOS                       |");
+    kprintf("|                              EOS                            |");
     set_cursor_pos(2, 0);
-    kprintf("------------------------------------------------");
+    kprintf("---------------------------------------------------------------");
 
     start(
 		(uint32_t*)((char*)(uint64_t)loader_stack[3] + 

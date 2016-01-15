@@ -114,7 +114,7 @@ int main(int argc, char **argv)
     int i, j=0, k=0, file_descp, ptr_length, lendir = 0, str_length;
     char* exec_path;
 
-    printf("\n\t\t\t\t*******NEW SHELL*******");
+    printf("\nNew shell.\n");
     //By default current directory stream will be pointing to DIR stream of '/'
     curr_dir_ptr = opendir("/");
     while(1) {

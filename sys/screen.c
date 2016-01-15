@@ -6,7 +6,7 @@
 #include <screen.h>
 #include <sys/common.h>
 
-#define MAX_ROW 24          // We shall use the last row for displaying timer
+#define MAX_ROW 24 // We shall use the last row for displaying timer
 #define MAX_COL 80
 #define SIZEOF_LINE 160     // MAX_COL * 2 bytes
 #define SIZEOF_BUFFER 3840  // MAX_ROW * MAX_COL * 2 bytes
@@ -112,7 +112,7 @@ void clear_screen()
 
 void init_screen()
 {
-    set_color(RED, BLACK);
+    set_color(WHITE, BLACK);
     clear_screen();
 }
 

@@ -1,10 +1,22 @@
 /* 
- * Copyright (C) 2016 eos - All rights reserved.
+ * Copyright (C) 2016 EOS - All rights reserved.
  *
- * This file is part of eos. 
- * Unauthorized copying of this file, via any medium is strictly prohibited
+ * This file is part of EOS. 
+ * Unauthorized copying of this file, via any medium is strictly prohibited.
  * Proprietary and confidential.
  * Written by Alexandre Arsenault <alx.arsenault@gmail.com>, 13/01/2016
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
  */
 
 #ifndef _EOS_SYS_TYPES_H_
@@ -120,10 +132,15 @@ typedef uint64_t	size_t;
 /// ssize_t shall be signed integer types.
 typedef int64_t		ssize_t;
 
-//suseconds_t
-//[XSI] [Option Start] Used for time in microseconds. [Option End]
-//time_t
-//Used for time in seconds.
+/// [XSI] Used for time in microseconds.
+/// The type suseconds_t shall be a signed integer type capable of storing
+/// values at least in the range [-1, 1000000].
+typedef int64_t		suseconds_t;
+
+/// [XSI] Used for time in seconds.
+/// time_t shall be an integer type.
+typedef int64_t		time_t;
+
 //timer_t
 //Used for timer ID returned by timer_create().
 //trace_attr_t
@@ -179,9 +196,12 @@ typedef int64_t		ssize_t;
 
 //The type ssize_t shall be capable of storing values at least in the range [-1, {SSIZE_MAX}].
 
-//[XSI] [Option Start] The type suseconds_t shall be a signed integer type capable of storing values at least in the range [-1, 1000000]. [Option End]
 
-//The implementation shall support one or more programming environments in which the widths of blksize_t, pid_t, size_t, ssize_t, and suseconds_t are no greater than the width of type long. The names of these programming environments can be obtained using the confstr() function or the getconf utility.
+// The implementation shall support one or more programming environments in
+// which the widths of blksize_t, pid_t, size_t, ssize_t, and suseconds_t are
+// no greater than the width of type long. The names of these programming
+// environments can be obtained using the confstr() function or the getconf
+// utility.
 
 //There are no defined comparison or assignment operators for the following types:
 
